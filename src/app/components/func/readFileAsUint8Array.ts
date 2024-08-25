@@ -4,7 +4,7 @@
  * @param onProgress : 파일 읽기 진행도에 따른 콜백함수
  * @returns 
  */
-const readFileAsUint8Array = (file: File, onProgress: (progress: number) => void ): Promise<Uint8Array> => {
+export const readFileAsUint8Array = (file: File, onProgress: (progress: number) => void ): Promise<Uint8Array> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
