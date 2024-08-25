@@ -1,3 +1,4 @@
+import {nextui} from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -5,6 +6,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/components/(button|card|image|progress|ripple|spinner).js"
   ],
   theme: {
     extend: {
@@ -13,8 +15,17 @@ const config: Config = {
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      keyframes: {
+        expandToOriginal: {
+          '0%': { transform: 'scaleY(0.01)', height: '2px' },
+          '100%': { transform: 'scaleY(1)', height: '100%' },
+        },
+      },
+      animation: {
+        'expand-to-original': 'expandToOriginal 2s ease-in-out forwards',
+      },
     },
   },
-  plugins: [],
+  plugins: [nextui()],
 };
 export default config;
