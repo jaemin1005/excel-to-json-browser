@@ -4,8 +4,18 @@ import { useFileList } from "../context/file_list_context";
 import { readFileAsUint8Array } from "../../func/readFileAsUint8Array";
 import { Tooltip } from "@nextui-org/tooltip";
 import Image from "next/image";
+import { Spinner } from "@nextui-org/spinner";
 
-export function FileComponent({ file, fileTransLoading }: { file: File, fileTransLoading: boolean }) {
+
+export function FileComponent({
+  file,
+  fileTransLoading,
+  onClick,
+}: {
+  file: File;
+  fileTransLoading: boolean;
+  onClick: () => void;
+}) {
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -29,7 +39,10 @@ export function FileComponent({ file, fileTransLoading }: { file: File, fileTran
 
   return (
     <Tooltip showArrow={true} content={file.name}>
-      <div className="relative animate-zoom-in shadow-md w-[100px] h-[100px] shadow-slate-600">
+      <div
+        className="relative animate-zoom-in shadow-md w-[100px] h-[100px] shadow-slate-600 flex justify-center items-center"
+        onClick={onClick}
+      >
         {loading ? (
           <CircularProgress
             aria-label="Loading..."
@@ -38,6 +51,8 @@ export function FileComponent({ file, fileTransLoading }: { file: File, fileTran
             color="warning"
             showValueLabel={true}
           />
+        ) : fileTransLoading ? (
+          <Spinner size="lg" color="primary" />
         ) : (
           <>
             <Image
@@ -49,7 +64,10 @@ export function FileComponent({ file, fileTransLoading }: { file: File, fileTran
             />
           </>
         )}
-        <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 opacity-0 transition duration-300 ease-in-out hover:opacity-70"></div>
+        <div className="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-gradient-to-r bg-red-400 opacity-0 transition duration-300 ease-in-out hover:opacity-70 flex justify-center items-center">
+          <div className="absolute w-[8px] h-[32px] bg-red-600 rounded rotate-45"></div>
+          <div className="absolute w-[8px] h-[32px] bg-red-600 rounded -rotate-45"></div>
+        </div>
       </div>
     </Tooltip>
   );
