@@ -14,6 +14,7 @@ interface FileData {
 interface FileContextType {
   fileDatas: FileData[];
   addFileData: (fileData: FileData) => void;
+  removeFileData: (idx : number) => void;
   clearDatas: () => void;
 }
 
@@ -23,16 +24,15 @@ export const FileContextProvider = ({ children }: { children: ReactNode }) => {
     const [fileDatas, setFilesData] = useState<FileData[]>([])
   
     //* Context의 메소드를 구현, 들어온 아이템을 배열에 더해준다.
-    const addFileData = (fileData: FileData) => {
-        setFilesData((prev) => [...prev, fileData]);
-    }
+    const addFileData = (fileData: FileData) => setFilesData((prev) => [...prev, fileData]);
+  
+    const clearDatas = () => setFilesData([]);
 
-    const clearDatas = () => {
-        setFilesData([]);
-    }
+    const removeFileData = (idx: number) => setFilesData((prev) => prev.filter((_, i) => i !== idx ))
+
 
     return (
-      <FileContext.Provider value={{ fileDatas, addFileData, clearDatas }}>
+      <FileContext.Provider value={{ fileDatas, addFileData, removeFileData, clearDatas }}>
         {children}
       </FileContext.Provider>
     );
