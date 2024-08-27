@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
+import { FileContextProvider } from "./components/file_upload_component/context/file_list_context";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +14,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <FileContextProvider>
+        <body className="bg-[#E9E0E0] w-screen h-screen flex flex-col justify-center items-center">
+          {children}
+        </body>
+      </FileContextProvider>
     </html>
   );
 }
