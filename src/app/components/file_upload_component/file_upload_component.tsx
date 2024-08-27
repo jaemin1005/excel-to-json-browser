@@ -3,6 +3,9 @@ import { useState, DragEventHandler, MouseEventHandler } from "react";
 import { checkFileExtensions } from "../func/checKFileExtension";
 import { useFileList } from "./context/file_list_context";
 import { FileComponent } from "./component/file_component";
+import { getFileNameWithoutExtension } from "../func/getFileNameWithoutExtension";
+import { AddFileComponent } from "./component/add_file_component";
+import { transferJSON } from "../../../utils/transfer_json";
 
 const MAX_TOTAL_SIZE = 1 * 1024 * 1024;
 
@@ -12,7 +15,7 @@ export function FileUploadComponent() {
   const [loadingFiles, setLoadingFiles] = useState<boolean[]>([]);
   const checkFile = checkFileExtensions("xlsx");
 
-  const { fileDatas, clearDatas } = useFileList();
+  const { fileDatas, removeFileData } = useFileList();
 
   const handleDragOver: DragEventHandler<HTMLDivElement> = (event) => {
     event.preventDefault();
@@ -28,12 +31,19 @@ export function FileUploadComponent() {
 
     if (ev.dataTransfer === null) return;
 
-    //* 확장자 체크
-    const droppedFiles = Array.from(ev.dataTransfer.files);
-    droppedFiles.every((item) => checkFile(item.name));
+    addFileFunc(ev.dataTransfer.files);
+  };
+
+  const addFileFunc = (uploadFiles: FileList) => {
+    const filterFiles = Array.from(uploadFiles).filter((file) =>
+      checkFile(file.name)
+    );
+
+    //* 필터된 결과가 길이가 0이면 빠져나온다.
+    if (filterFiles.length === 0) return;
 
     const currentTotalSize = files.reduce((acc, file) => acc + file.size, 0);
-    const newTotalSize = droppedFiles.reduce((acc, file) => acc + file.size, 0);
+    const newTotalSize = filterFiles.reduce((acc, file) => acc + file.size, 0);
     const totalSize = currentTotalSize + newTotalSize;
 
     //* 용량계산하여 1MB가 넘어갔을 때
@@ -42,55 +52,77 @@ export function FileUploadComponent() {
       return;
     }
 
-    setFiles((prev) => [...prev, ...droppedFiles]);
+    setFiles((prev) => [...prev, ...filterFiles]);
     setLoadingFiles((prev) => [
       ...prev,
-      ...new Array(droppedFiles.length).fill(false),
+      ...new Array(filterFiles.length).fill(false),
     ]);
   };
 
   const removeFile = (idx: number) => {
-    setFiles((prev) => {
-      return prev.filter((_, index) => index !== idx);
-    });
+    setFiles((prev) => prev.filter((_, i) => i !== idx));
+    setLoadingFiles((prev) => prev.filter((_, i) => i !== idx));
+    removeFileData(idx);
   };
 
   const fileTransper: MouseEventHandler<HTMLDivElement> = async (ev) => {
     if (files.length === 0 || loading === true) return;
 
+    //* 중간에 제거되는 인덱스에 따라 값이 늘어난다.
+    let removeIdx = 0;
+
     setLoading(true);
 
-    const promise = fileDatas.map((file) =>
-      fetch("/api/download", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/octet-stream",
-        },
-        body: file.data,
-      }).then(async (res) => {
-        if (!res.ok) throw new Error("파일 다운로드 실패");
+    const promise = fileDatas.map((file, idx) => {
+      setLoadingFiles((prev) => {
+        const newLoadingFiles = [...prev];
+        newLoadingFiles[idx] = true; // 파일 전송 시작 시 로딩 상태 설정
+        return newLoadingFiles;
+      });
 
-        // Blob 객체로부터 URL 생성
-        const blob = await res.blob();
-        const url = window.URL.createObjectURL(blob);
+      return new Promise<void>((res) => {
+        transferJSON(getFileNameWithoutExtension(file.name), file.data);
+        res();
+      }).finally(() => {
+        //* 제거되면 배열이 길이가 줄어듬으로 그만큼 removeIdx를 빼준다.
+        removeFile(idx - removeIdx++);
+      });
 
-        // 임시 링크 생성 및 클릭하여 다운로드 트리거
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "data.zip"; // 다운로드할 파일 이름
-        a.click();
+      // return fetch("/api/download", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/octet-stream",
+      //   },
+      //   body: file.data,
+      // })
+      //   .then(async (res) => {
+      //     if (!res.ok) throw new Error("파일 다운로드 실패");
 
-        // Blob URL 해제
-        window.URL.revokeObjectURL(url);
-      })
-    );
+      //     //* Blob 객체로부터 URL 생성
+      //     const blob = await res.blob();
+      //     const url = window.URL.createObjectURL(blob);
+
+      //     //* 임시 링크 생성 및 클릭하여 다운로드 트리거
+      //     const a = document.createElement("a");
+      //     a.href = url;
+      //     a.download = `${getFileNameWithoutExtension(file.name)}.zip`;
+      //     a.click();
+
+      //     // Blob URL 해제
+      //     window.URL.revokeObjectURL(url);
+      //   })
+      //   .finally(() => {
+      //     //* 변환이 완료되면 파일과 로딩 상태를 동시에 제거
+      //     removeFile(idx);
+      //   });
+    });
 
     await Promise.all([promise]);
-    setLoading(true);
+    setLoading(false);
   };
 
   return (
-    <div className="relative w-[808px] h-[443px] bg-white rounded-[20px] pt-[10px]">
+    <div className="relative w-[808px] h-[443px] bg-white rounded-[20px] pt-[10px] shadow-lg shadow-gray-500">
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
@@ -105,15 +137,19 @@ export function FileUploadComponent() {
                 key={idx}
                 file={file}
                 fileTransLoading={loadingFiles[idx]}
+                onClick={() => {
+                  removeFile(idx);
+                }}
               />
             ))}
+          <AddFileComponent func={addFileFunc} />
         </div>
       </div>
       <div
         onClick={fileTransper}
-        className="absolute w-[226px] h-[65px] top-[92%] left-[36.01%] right-[36.01%] bg-[#4AB2D3] rounded-[30px] flex justify-center items-center"
+        className="hover:cursor-pointer absolute w-[226px] h-[65px] top-[92%] left-[36.01%] right-[36.01%] bg-[#4AB2D3] rounded-[30px] flex justify-center items-center hover:bg-[#31839e] shadow-lg shadow-slate-500"
       >
-        <span className="font-inter font-extrabold text-[20px] leading-[24px] text-white">
+        <span className="select-none font-inter font-extrabold text-[20px] leading-[24px] text-white">
           Transfer
         </span>
       </div>
