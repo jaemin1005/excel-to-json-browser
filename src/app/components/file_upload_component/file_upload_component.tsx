@@ -7,8 +7,6 @@ import { getFileNameWithoutExtension } from "../func/getFileNameWithoutExtension
 import { AddFileComponent } from "./component/add_file_component";
 import { transferJSON } from "../../../utils/transfer_json";
 
-const MAX_TOTAL_SIZE = 1 * 1024 * 1024;
-
 export function FileUploadComponent() {
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,16 +39,6 @@ export function FileUploadComponent() {
 
     //* 필터된 결과가 길이가 0이면 빠져나온다.
     if (filterFiles.length === 0) return;
-
-    const currentTotalSize = files.reduce((acc, file) => acc + file.size, 0);
-    const newTotalSize = filterFiles.reduce((acc, file) => acc + file.size, 0);
-    const totalSize = currentTotalSize + newTotalSize;
-
-    //* 용량계산하여 1MB가 넘어갔을 때
-    //TODO 에러처리가 필요하다
-    if (totalSize > MAX_TOTAL_SIZE) {
-      return;
-    }
 
     setFiles((prev) => [...prev, ...filterFiles]);
     setLoadingFiles((prev) => [
