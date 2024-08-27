@@ -7,13 +7,6 @@ module.exports = {
       layers: true,
     };
 
-    config.module.rules.push({
-      test: /\.wasm$/,
-      use: {
-        loader: 'wasm-loader',
-      },
-    });
-
     return config;
   },
 };
