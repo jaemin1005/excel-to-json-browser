@@ -15,6 +15,6 @@ export async function transferJSON(fileName: string, byteArray: Uint8Array) {
   zip.generateAsync({ type: "blob" })
   .then(function(content) {
     // 6. 파일을 다운로드합니다.
-    saveAs(content, "data.zip");
+    saveAs(content, `${fileName}.zip`);
   });
 }
