@@ -21,6 +21,8 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4263359409265449"
+     crossOrigin="anonymous"></script>
       </head>
       <FileContextProvider>
         <body className="bg-[#E9E0E0] w-screen h-screen flex flex-col justify-center items-center overscroll-y-none">
