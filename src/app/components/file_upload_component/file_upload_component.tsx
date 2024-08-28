@@ -110,12 +110,12 @@ export function FileUploadComponent() {
   };
 
   return (
-    <div className="relative w-[808px] h-[443px] bg-white rounded-[20px] pt-[10px] shadow-lg shadow-gray-500">
+    <div className="relative h-[443px] bg-white rounded-[20px] pt-[10px] px-[10px] shadow-lg shadow-gray-500 flex justify-center w-full">
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragEnter={handleDragEnter}
-        className="w-[788px] h-[423px] border-dashed border-2 border-neutral-600 rounded-[20px] mx-auto flex flex-col items-center"
+        className="w-full h-[423px] border-dashed border-2 border-neutral-600 rounded-[20px] flex flex-col items-center"
       >
         <DragDropComponent />
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 overflow-auto py-5 px-2">
@@ -135,7 +135,7 @@ export function FileUploadComponent() {
       </div>
       <div
         onClick={fileTransper}
-        className="hover:cursor-pointer absolute w-[226px] h-[65px] top-[92%] left-[36.01%] right-[36.01%] bg-[#4AB2D3] rounded-[30px] flex justify-center items-center hover:bg-[#31839e] shadow-lg shadow-slate-500"
+        className="hover:cursor-pointer absolute w-[226px] h-[65px] top-[92%] bg-[#4AB2D3] rounded-[30px] flex justify-center items-center hover:bg-[#31839e] shadow-lg shadow-slate-500"
       >
         <span className="select-none font-inter font-extrabold text-[20px] leading-[24px] text-white">
           Transfer
