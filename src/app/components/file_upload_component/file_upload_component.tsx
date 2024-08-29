@@ -138,7 +138,7 @@ export function FileUploadComponent() {
         className="hover:cursor-pointer absolute w-[226px] h-[65px] top-[92%] bg-[#4AB2D3] rounded-[30px] flex justify-center items-center hover:bg-[#31839e] shadow-lg shadow-slate-500"
       >
         <span className="select-none font-inter font-extrabold text-[20px] leading-[24px] text-white">
-          Transfer
+          Convert
         </span>
       </div>
     </div>
