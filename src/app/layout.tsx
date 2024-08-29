@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { FileContextProvider } from "./components/file_upload_component/context/file_list_context";
 import { Meta as META } from "../static/meta";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   metadataBase: META.METADATABASE,
@@ -28,6 +29,7 @@ export default function RootLayout({
         <body className="bg-[#E9E0E0] w-screen h-screen flex flex-col justify-center items-center overscroll-y-none">
           {children}
         </body>
+        <GoogleAnalytics gaId="G-B8SJCX6J41"/>
       </FileContextProvider>
     </html>
   );
