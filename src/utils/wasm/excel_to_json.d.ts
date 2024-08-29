@@ -13,6 +13,11 @@ export function excel_to_json(excel_data: Uint8Array, sheet_index: number, is_is
 * @returns {any[]}
 */
 export function all_excel_to_json(excel_data: Uint8Array, is_iso8601: boolean): any[];
+/**
+* @param {Uint8Array} csv_data
+* @returns {(object)[]}
+*/
+export function csv_to_json(csv_data: Uint8Array): (object)[];
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
 
@@ -20,6 +25,7 @@ export interface InitOutput {
   readonly memory: WebAssembly.Memory;
   readonly excel_to_json: (a: number, b: number, c: number, d: number, e: number) => void;
   readonly all_excel_to_json: (a: number, b: number, c: number, d: number) => void;
+  readonly csv_to_json: (a: number, b: number, c: number) => void;
   readonly __wbindgen_malloc: (a: number, b: number) => number;
   readonly __wbindgen_realloc: (a: number, b: number, c: number, d: number) => number;
   readonly __wbindgen_add_to_stack_pointer: (a: number) => number;
