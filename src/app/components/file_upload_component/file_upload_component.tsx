@@ -3,7 +3,7 @@ import { useState, DragEventHandler, MouseEventHandler } from "react";
 import { checkFileExtensions } from "../func/checKFileExtension";
 import { useFileList } from "./context/file_list_context";
 import { FileComponent } from "./component/file_component";
-import { getFileNameWithoutExtension } from "../func/getFileNameWithoutExtension";
+import { getFileNameAndExtension } from "../func/getFileNameAndExtension";
 import { AddFileComponent } from "./component/add_file_component";
 import { transferJSON } from "../../../utils/transfer_json";
 
@@ -11,7 +11,7 @@ export function FileUploadComponent() {
   const [files, setFiles] = useState<File[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingFiles, setLoadingFiles] = useState<boolean[]>([]);
-  const checkFile = checkFileExtensions("xlsx");
+  const checkFile = checkFileExtensions("xlsx", "csv");
 
   const { fileDatas, removeFileData } = useFileList();
 
@@ -69,7 +69,7 @@ export function FileUploadComponent() {
       });
 
       return new Promise<void>((res) => {
-        transferJSON(getFileNameWithoutExtension(file.name), file.data);
+        transferJSON(getFileNameAndExtension(file.name), file.data);
         res();
       }).finally(() => {
         //* 제거되면 배열이 길이가 줄어듬으로 그만큼 removeIdx를 빼준다.
