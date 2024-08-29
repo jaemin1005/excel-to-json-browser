@@ -7,7 +7,7 @@ export function DragDropComponent() {
         <Image src="/cloud_upload.svg" width={80} height={80} alt="" objectFit="contain"/>
       </div>
       <h1 className="select-none font-inter text-[40px] font-extrabold text-zinc-600">Drag & Drop</h1>
-      <h3 className="select-none font-inter text-[20px] line-[24px] font-extrabold text-[#B4B0B0] text-center"> Only converts XLSX files to JSON and does not store files on the server</h3>
+      <h3 className="select-none font-inter text-[20px] line-[24px] font-extrabold text-[#B4B0B0] text-center"> Converts XLSX, CSV files to JSON and does not store files on the server</h3>
     </div>
   );
 }
