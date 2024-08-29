@@ -5,6 +5,9 @@ import { readFileAsUint8Array } from "../../func/readFileAsUint8Array";
 import { Tooltip } from "@nextui-org/tooltip";
 import Image from "next/image";
 import { Spinner } from "@nextui-org/spinner";
+import { getFileNameAndExtension } from "../../func/getFileNameAndExtension";
+import { FILE_EXTENSION } from "@/static/file_extension";
+import { IMAGE_PATH } from "@/static/image_path";
 
 
 export function FileComponent({
@@ -18,6 +21,7 @@ export function FileComponent({
 }) {
   const [progress, setProgress] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
+  const imagePath = getFileNameAndExtension(file.name)[1] === FILE_EXTENSION.XLSX ? IMAGE_PATH.xlsx : IMAGE_PATH.csv;
 
   const progressFunc = (progress: number) => {
     setProgress(progress);
@@ -57,7 +61,7 @@ export function FileComponent({
           <>
             <Image
               className="relative"
-              src={"/xlsx.svg"}
+              src={imagePath}
               alt=""
               layout="fill"
               objectFit="cover"
