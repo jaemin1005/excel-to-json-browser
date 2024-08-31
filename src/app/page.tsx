@@ -22,7 +22,7 @@ export default function Home() {
       <div className="lg:row-start-2 lg:col-start-1 lg:block hidden">
         {/* 좌측 광고 */}
       </div>
-      <div className="row-start-2 lg:col-start-2border lg:col-span-1 col-span-2 p-4 flex justify-center items-center">
+      <div className="row-start-2 lg:col-start-2border lg:col-span-1 col-span-2  flex justify-center items-center">
         <FileUploadComponent />
       </div>
       <div className="lg:row-start-2 lg:col-start-3 row-start-3 col-start-2 lg:block hidden">
