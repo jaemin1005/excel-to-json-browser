@@ -14,11 +14,11 @@ export default function AdSense({ ad_slot }: { ad_slot: string }) {
   return (
     <ins
       className="adsbygoogle"
-      style={{ display: "block" }}
-      data-ad-format="fluid"
-      data-ad-layout-key="-fb+5w+4e-db+86"
+      style={{display: "block"}}
       data-ad-client="ca-pub-4263359409265449"
       data-ad-slot={ad_slot}
+      data-ad-format="auto"
+      data-full-width-responsive="true"
     ></ins>
   );
 }
