@@ -17,7 +17,7 @@ export default function Home() {
   return (
     <div className="w-screen grid grid-rows-3-[1fr_3fr_1fr] lg:grid-cols-[1fr_3fr_1fr] grid-cols-1 h-screen gap-2">
       <div className="row-start-1 lg:col-start-2 col-start-1 p-1">
-        <AdSense ad_slot="8151973360" />
+        {/* <AdSense ad_slot="8151973360" /> */}
       </div>
       <div className="lg:row-start-2 lg:col-start-1 lg:block hidden">
         {/* 좌측 광고 */}
@@ -29,7 +29,7 @@ export default function Home() {
         {/* 우측 광고 */}
       </div>
       <div className="row-start-3 lg:col-start-2 col-start-1 p-1">
-        <AdSense ad_slot="5004099684" />
+        {/* <AdSense ad_slot="5004099684" /> */}
       </div>
     </div>
   );
