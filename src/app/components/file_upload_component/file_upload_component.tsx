@@ -110,7 +110,7 @@ export function FileUploadComponent() {
   };
 
   return (
-    <div className="relative h-[443px] bg-white rounded-[20px] pt-[10px] px-[10px] shadow-lg shadow-gray-500 flex justify-center w-full">
+    <div className="relative h-[443px] bg-white lg:rounded-[20px] pt-[10px] px-[10px] shadow-lg shadow-gray-500 flex justify-center w-full rounded-none max-w-[1050px]">
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
